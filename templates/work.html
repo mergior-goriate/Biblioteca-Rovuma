@@ -8,7 +8,15 @@
 {% if work.authors.all %}<p class="muted">{{ work.authors.all|join:", " }}</p>{% endif %}
 {% if work.summary %}<div>{{ work.summary|linebreaks }}</div>{% endif %}
 {% if work.subjects.all or work.keywords %}<div class="tags">{% for subject in work.subjects.all %}<span>{{ subject }}</span>{% endfor %}{% if work.keywords %}<span>{{ work.keywords }}</span>{% endif %}</div>{% endif %}
+{% if collections %}<p class="small">Colecções: {% for collection in collections %}<a href="{% url 'catalogue' %}?coleccao={{ collection.pk }}">{{ collection.name }}</a>{% if not forloop.last %} · {% endif %}{% endfor %}</p>{% endif %}
 {% if work.terms %}<h2>Condições de utilização</h2>{{ work.terms|linebreaks }}{% endif %}
+{% if nav_student %}
+<form method="post" action="{% url 'save_work' work.pk %}">
+  {% csrf_token %}
+  {% if saved %}<button class="secondary" name="action" value="remove">Retirar das obras guardadas</button>
+  {% else %}<button class="secondary" name="action" value="save">Guardar obra</button>{% endif %}
+</form>
+{% endif %}
 </div>
 </article>
 <div class="two-col section">
@@ -17,5 +25,18 @@
 <section class="panel"><h2>Exemplares físicos</h2><p>Consulta local na biblioteca</p>
 {% if copies %}<p><strong>{{ copies|length }}</strong> exemplar{{ copies|length|pluralize:" catalogado,es catalogados" }} para consulta local.</p>{% endif %}
 {% for copy in copies %}<div class="record"><strong>{{ copy.get_state_display }}</strong><p>{{ copy.location }}</p>{% if copy.location.placement %}<p>{{ copy.location.placement }}</p>{% endif %}{% if copy.location.description %}<p>{{ copy.location.description }}</p>{% endif %}<small>{{ copy.edition.label }} · {{ copy.inventory }}</small></div>{% empty %}<p class="muted">Sem exemplares catalogados para consulta local.</p>{% endfor %}<p class="small muted">O acervo físico continua em actualização.</p></section></div>
-{% if work.editions.all %}<section class="panel section"><h2>Edições e identificadores</h2>{% for edition in work.editions.all %}<div class="record"><strong>{{ edition.label }}</strong> {{ edition.publisher }} {{ edition.year|default_if_none:"" }}{% for id in edition.identifiers.all %}<div>{{ id.scheme }} <span class="break">{{ id.value }}</span></div>{% endfor %}</div>{% endfor %}</section>{% endif %}
+{% if work.editions.all %}
+<section class="panel section"><h2>Edições e referências bibliográficas</h2>
+  {% for edition in work.editions.all %}
+  <div class="record">
+    <strong>{{ edition.label }}</strong> {{ edition.publisher }} {{ edition.year|default_if_none:"" }}
+    {% for identifier in edition.identifiers.all %}<div>{{ identifier.scheme }} <span class="break">{{ identifier.value }}</span></div>{% endfor %}
+    <div class="actions">
+      <a href="{% url 'work_bibliography' work.pk edition.pk 'ris' %}" class="secondary" aria-label="Descarregar RIS para {{ edition.label }}">Descarregar RIS</a>
+      <a href="{% url 'work_bibliography' work.pk edition.pk 'bib' %}" class="secondary" aria-label="Descarregar BibTeX para {{ edition.label }}">Descarregar BibTeX</a>
+    </div>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
 {% endblock %}

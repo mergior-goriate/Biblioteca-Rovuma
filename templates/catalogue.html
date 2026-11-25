@@ -38,17 +38,31 @@
     </select>
     {% include "management/icon.html" with icon="chevron" %}
   </div>
-  <button class="primary" type="submit" form="portal-search">Aplicar filtros</button>
-  {% if q or kind or language or year or format %}<a class="plain" href="{% url 'catalogue' %}">Limpar</a>{% endif %}
+  {% if collections %}
+  <div class="catalogue-filter">
+    <label for="catalogue-collection" class="sr-only">Colecção</label>
+    {% include "management/icon.html" with icon="books" %}
+    <select form="portal-search" id="catalogue-collection" name="coleccao"{% if selected_collection %} data-active="true"{% endif %}>
+      <option value="">Colecção</option>
+      {% for collection in collections %}<option value="{{ collection.pk }}"{% if collection.pk == selected_collection.pk %} selected{% endif %}>{{ collection.name }}</option>{% endfor %}
+    </select>
+    {% include "management/icon.html" with icon="chevron" %}
+  </div>
+  {% endif %}
+  <div class="catalogue-filter-actions">
+    <button class="primary" type="submit" form="portal-search">Aplicar filtros</button>
+    {% if q or kind or language or year or format or selected_collection %}<a class="plain" href="{% url 'catalogue' %}">Limpar</a>{% endif %}
+  </div>
 </div>
 {% endblock %}
 
 {% block content %}
 <section aria-labelledby="catalogue-title">
   <div class="section-head catalogue-results-heading">
-    <h1 id="catalogue-title" tabindex="-1">Obras</h1>
+    <h1 id="catalogue-title" tabindex="-1">{% if selected_collection %}{{ selected_collection.name }}{% else %}Obras{% endif %}</h1>
     <span class="muted">{{ page.paginator.count }} resultado{{ page.paginator.count|pluralize }}</span>
   </div>
+  {% if selected_collection.description %}<p>{{ selected_collection.description|linebreaksbr }}</p>{% endif %}
   <div class="portal-book-grid">
     {% for work in page %}{% include 'book_card.html' %}{% empty %}<div class="empty">Nenhuma obra corresponde à pesquisa.</div>{% endfor %}
   </div>

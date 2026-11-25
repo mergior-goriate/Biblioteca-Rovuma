@@ -10,6 +10,7 @@
       <h1>{{ work.title }}</h1>
       {% if work.subtitle %}<p>{{ work.subtitle }}</p>{% endif %}
       <p class="small muted">{{ work.get_kind_display }}{% if work.language %} · {{ work.language }}{% endif %}</p>
+      {% if work.collections.all %}<p class="small muted">Colecções: {{ work.collections.all|join:", " }}</p>{% endif %}
     </div>
   </div>
   <a class="primary" href="{% url 'edit_work' work.pk %}">Editar dados</a>

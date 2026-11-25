@@ -16,6 +16,7 @@ from django.views.decorators.http import require_POST, require_http_methods
 
 from accounts.access import EDITOR, has, permission, require, student
 from audit.models import record
+from catalog.availability import unpublish_if_unavailable
 from catalog.models import Edition, Work
 from .formats import SUPPORTED_FORMATS, TEXT_MAX_BYTES
 from .models import Document, Job, Licence, Upload, Version
@@ -241,11 +242,6 @@ def editorial(request, pk):
             raise Http404
         version.save(update_fields=["state"])
         record(request.user, "collection", label, version.pk)
-        if action in {"archive", "withdraw"}:
-            from catalog.models import Copy
-            if not (Version.objects.filter(document__edition__work=work, state=Version.State.PUBLISHED).exists()
-                    or Copy.objects.filter(edition__work=work, state=Copy.State.LOCAL).exists()):
-                if work.state == Work.State.PUBLISHED:
-                    work.state = Work.State.DRAFT
-                work.save(update_fields=["state", "modified"])
+        if action in {"archive", "withdraw"} and unpublish_if_unavailable(work, request.user):
+            messages.warning(request, "A obra voltou a rascunho porque já não tem um formato consultável.")
     return redirect("manage_work", pk=work.pk)

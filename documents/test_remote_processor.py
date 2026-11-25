@@ -76,6 +76,9 @@ class PrivateTransportTests(TestCase):
                             result = process(f"http://processador.railway.internal:{port}", key, source, file_format, target)
                             self.assertEqual(result["pages"], 3)
                             self.assertEqual(target.read_bytes(), converted)
+                            # The client can finish reading before the handler releases the slot.
+                            self.assertTrue(server.slot.acquire(timeout=5))
+                            server.slot.release()
             finally:
                 server.shutdown()
                 thread.join()
