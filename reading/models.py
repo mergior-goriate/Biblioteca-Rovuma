@@ -22,3 +22,12 @@ class Bookmark(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=("user", "version", "page"), name="unique_bookmark_page")]
+
+
+class SavedWork(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    work = models.ForeignKey("catalog.Work", related_name="saved_entries", on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=("user", "work"), name="one_saved_entry_per_work")]

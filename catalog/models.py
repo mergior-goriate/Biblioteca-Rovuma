@@ -11,6 +11,18 @@ class Subject(models.Model):
     def __str__(self): return self.name
 
 
+class Collection(models.Model):
+    name = models.CharField("Nome", max_length=180, unique=True)
+    description = models.TextField("Descrição", blank=True)
+    published = models.BooleanField("Visível no catálogo", default=False)
+
+    class Meta:
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name
+
+
 class Work(models.Model):
     class State(models.TextChoices):
         DRAFT = "draft", "Rascunho"
@@ -35,6 +47,7 @@ class Work(models.Model):
     state = models.CharField(max_length=12, choices=State.choices, default=State.DRAFT, db_index=True)
     authors = models.ManyToManyField(Author, blank=True)
     subjects = models.ManyToManyField(Subject, blank=True)
+    collections = models.ManyToManyField(Collection, related_name="works", blank=True, verbose_name="Colecções")
     is_demo = models.BooleanField(default=False, editable=False)
     modified = models.DateTimeField(auto_now=True)
 

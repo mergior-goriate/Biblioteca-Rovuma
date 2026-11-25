@@ -12,6 +12,7 @@ O [PR #10](https://github.com/MergiorGoriate/Biblioteca-Rovuma/pull/10) integrou
 
 - Pesquisa por título, subtítulo, autor, assunto, palavra-chave ou identificador. O catálogo tem filtros por tipo, idioma, ano e formato, incluindo obras digitais, físicas ou disponíveis nos dois formatos.
 - Página inicial com obras em destaque e a secção **Continuar a ler**. A ficha de cada obra apresenta edições, identificadores, modalidades de acesso digital e, quando aplicável, exemplares para consulta local.
+- O catálogo pode ser filtrado pelas colecções publicadas pela biblioteca. Na ficha da obra, é possível descarregar a referência de cada edição em RIS ou BibTeX. Os estudantes podem guardar obras digitais ou físicas em **Minhas leituras**.
 - Inventário físico com unidade, sala, estante e prateleira. A contagem indica os exemplares registados para consulta local. A disponibilidade imediata confirma-se na biblioteca.
 - Leitor de PDF no navegador com navegação por página, ajuste de largura, pesquisa no texto quando disponível, marcadores e retoma da última página. **Minhas leituras** reúne o progresso e os marcadores do estudante.
 - No ambiente de teste, o portal e o painel têm uma interface adaptada a computador e telemóvel, com navegação por ícones e modos claro e escuro que guardam a preferência. As barras superiores de pesquisa ficam fixas durante a deslocação. No catálogo, os filtros ficam na barra superior e a barra de deslocação fica na extremidade direita da página.
@@ -21,6 +22,7 @@ O [PR #10](https://github.com/MergiorGoriate/Biblioteca-Rovuma/pull/10) integrou
 - Entrada própria em `/admin/entrar/` e painel em `/admin/`. As secções disponíveis dependem das permissões da conta. As ligações anteriores em `/gestao/` encaminham para o painel actual.
 - Visão geral com contagens do acervo, da fila de documentos e do credenciamento. Os atalhos conduzem às listas correspondentes.
 - Gestão de obras, edições, autores, assuntos, identificadores, capas, localizações e exemplares físicos. O inventário permite pesquisar por obra, localização ou número de inventário.
+- Em **Obras e edições → Colecções**, a equipa bibliotecária pode criar e publicar colecções por curso ou disciplina. A associação é feita no formulário de cada obra.
 - Pesquisa de obras pelo título, filtro por estado e acção **Nova obra**. A barra superior fixa no ambiente de teste mantém acessíveis a pesquisa, a mudança de tema, **Abrir portal** e **Sair**. Em telemóvel, os atalhos administrativos estão no **Menu administrativo**.
 - Fila com estados de processamento e revisão, motivo de falha e opção de reagendar. O bibliotecário regista a autorização de uso, pré-visualiza o PDF, confirma a revisão e publica. Quando uma nova versão é publicada, a anterior passa para o histórico.
 
@@ -105,8 +107,7 @@ Na verificação de 17 de Novembro de 2026, o projecto tinha um ambiente `teste`
 ## Recursos a adicionar
 
 - **Importação do acervo em lote.** Importar obras, edições e exemplares por CSV, com pré-visualização, detecção de duplicados e erros por linha.
-- **Colecções por curso e disciplina.** Permitir que a equipa bibliotecária organize listas temáticas com apoio dos docentes, por exemplo para Metodologia de Investigação ou Biologia de Conservação.
-- **Citações e exportação bibliográfica.** Gerar referências em APA e exportar RIS ou BibTeX a partir da ficha da obra, com os metadados disponíveis.
+- **Referências em APA.** Acrescentar à ficha uma referência em APA, com metadados adequados a cada tipo de publicação.
 
 ## Recursos avançados propostos
 

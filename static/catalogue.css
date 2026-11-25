@@ -91,6 +91,7 @@ html:has(.catalogue-page) { scroll-padding-block-start: 155px; }
 .catalogue-year { width: 105px; }
 .catalogue-filters :is(.primary, .plain) { min-height: 40px; font-size: .84rem; border-radius: 100px; }
 .catalogue-filters .plain { padding-inline: 9px; }
+.catalogue-filter-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .catalogue-results-heading h1 { font-size: clamp(1.4rem, 3vw, 1.85rem); }
 .catalogue-acervo-note { margin-block: 14px 0; }
 .portal-hero {
@@ -160,7 +161,7 @@ html:has(.catalogue-page) { scroll-padding-block-start: 155px; }
     padding: 0 12px 10px;
   }
   .catalogue-year { width: auto; }
-  .catalogue-filters .plain { justify-self: start; }
+  .catalogue-filter-actions { grid-column: 1 / -1; }
 }
 @media (max-width: 610px) {
   .portal-hero { grid-template-columns: minmax(0, 1fr); }

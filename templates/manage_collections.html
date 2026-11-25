@@ -1,0 +1,21 @@
+{% extends "management/base.html" %}
+{% block title %}Colecções · Biblioteca Rovuma{% endblock %}
+{% block content %}
+<a class="admin-text-link admin-back-link" href="{% url 'collection' %}">{% include "management/icon.html" with icon="arrow" %}Gestão do acervo</a>
+<header class="admin-page-heading">
+  <h1>Colecções</h1>
+  <a class="primary admin-action" href="{% url 'new_collection' %}">{% include "management/icon.html" with icon="plus" %}Nova colecção</a>
+</header>
+<section class="admin-card">
+  <p>Associe obras a uma colecção em <a href="{% url 'collection' %}">Obras e edições</a>, no formulário <strong>Editar dados</strong>.</p>
+  {% for collection in page %}
+  <div class="row">
+    <div><strong>{{ collection.name }}</strong>
+      <p class="small muted">{% if collection.published %}Visível no catálogo{% else %}Rascunho{% endif %}</p>
+    </div>
+    <a class="secondary" href="{% url 'edit_collection' collection.pk %}">Editar<span class="sr-only"> {{ collection.name }}</span></a>
+  </div>
+  {% empty %}<p class="muted">Ainda não foram criadas colecções.</p>{% endfor %}
+  {% include "pagination.html" %}
+</section>
+{% endblock %}

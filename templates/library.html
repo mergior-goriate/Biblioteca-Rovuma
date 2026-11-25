@@ -3,4 +3,18 @@
 {% for item in recent %}<div class="record"><a href="{% url 'reader' item.version_id %}">{{ item.version.document.edition.work.title }}</a><p>Página {{ item.page }}</p></div>{% empty %}<p class="muted">Ainda não começou a ler uma obra.</p>{% endfor %}</section>
 <section class="panel"><h2>Marcadores</h2>
 {% for item in bookmarks %}<div class="record"><a href="{% url 'reader' item.version_id %}?pagina={{ item.page }}">{{ item.version.document.edition.work.title }}</a><p>Página {{ item.page }}</p></div>{% empty %}<p class="muted">Ainda não guardou marcadores.</p>{% endfor %}</section></div>
+<section class="panel section" aria-labelledby="saved-works">
+  <div class="section-head"><h2 id="saved-works">Obras guardadas</h2><a href="{% url 'catalogue' %}">Explorar o catálogo</a></div>
+  {% for work in page %}
+  <div class="row">
+    <a href="{% url 'work' work.pk %}">{{ work.title }}</a>
+    <form method="post" action="{% url 'save_work' work.pk %}">
+      {% csrf_token %}
+      <input type="hidden" name="source" value="library">
+      <button class="secondary" name="action" value="remove" aria-label="Retirar {{ work.title }} das obras guardadas">Retirar</button>
+    </form>
+  </div>
+  {% empty %}<p class="muted">Guarde obras a partir da ficha no catálogo para voltar a consultá-las aqui.</p>{% endfor %}
+  {% include "pagination.html" %}
+</section>
 {% endblock %}
