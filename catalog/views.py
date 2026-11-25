@@ -229,12 +229,23 @@ class WorkForm(forms.ModelForm):
     class Meta:
         model = Work
         fields = ("title", "subtitle", "kind", "language", "summary", "keywords", "terms", "authors", "subjects", "collections")
+        labels = {
+            "title": "Título",
+            "subtitle": "Subtítulo",
+            "kind": "Tipo",
+            "language": "Idioma",
+            "summary": "Resumo",
+            "keywords": "Palavras-chave",
+            "terms": "Condições de utilização",
+            "authors": "Autores",
+            "subjects": "Assuntos",
+        }
 
 
 @permission(EDITOR)
 def edit_work(request, pk=None, upload_document=False):
     work = get_object_or_404(Work, pk=pk) if pk else None
-    form = WorkForm(request.POST if request.method == "POST" else None, request.FILES, instance=work)
+    form = WorkForm(request.POST if request.method == "POST" else None, request.FILES or None, instance=work)
     if request.method == "POST" and form.is_valid():
         try:
             with transaction.atomic():

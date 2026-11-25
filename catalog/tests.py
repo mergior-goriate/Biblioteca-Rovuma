@@ -39,7 +39,11 @@ class CatalogueTest(TestCase):
             "name": "Biologia", "description": "Leituras do primeiro semestre",
         }), reverse("manage_collections"))
         collection = Collection.objects.get(name="Biologia")
-        self.assertRedirects(self.client.post(reverse("edit_work", args=[self.work.pk]), {
+        edit_work = reverse("edit_work", args=[self.work.pk])
+        form = self.client.get(edit_work).context["form"]
+        self.assertFalse(form.is_bound)
+        self.assertEqual(form["title"].value(), self.work.title)
+        self.assertRedirects(self.client.post(edit_work, {
             "title": self.work.title, "kind": self.work.kind, "language": self.work.language,
             "collections": [collection.pk],
         }), reverse("manage_work", args=[self.work.pk]))
